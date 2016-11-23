@@ -1,1 +1,0 @@
-# Template_ICMP_PT-BR
