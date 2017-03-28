@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
-    <version>3.0</version>
-    <date>2016-11-23T16:15:39Z</date>
+    <version>3.2</version>
+    <date>2017-03-27T02:14:31Z</date>
     <groups>
         <group>
             <name>Discovered hosts</name>
@@ -75,7 +75,7 @@
                     <logtimefmt/>
                 </item>
                 <item>
-                    <name>Perda de Pacotes</name>
+                    <name>Perda de Pacotes ICMP</name>
                     <type>3</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -118,7 +118,7 @@
                     <logtimefmt/>
                 </item>
                 <item>
-                    <name>Tempo de Resposta</name>
+                    <name>Tempo de Resposta ICMP</name>
                     <type>3</type>
                     <snmp_community/>
                     <multiplier>0</multiplier>
@@ -162,6 +162,7 @@
                 </item>
             </items>
             <discovery_rules/>
+            <httptests/>
             <macros/>
             <templates/>
             <screens/>
@@ -169,54 +170,80 @@
     </templates>
     <triggers>
         <trigger>
-            <expression>{Template ICMP Ping:icmppingloss.min(5m)}&gt;20</expression>
-            <name>A perda de pacotes está muito alta para  {HOST.NAME} no  IP: {HOST.CONN}</name>
-            <url/>
-            <status>0</status>
-            <priority>2</priority>
-            <description/>
-            <type>0</type>
-            <dependencies>
-                <dependency>
-                    <name>{HOST.NAME} Não está disponível por ICMP no  IP: {HOST.CONN}</name>
-                    <expression>{Template ICMP Ping:icmpping.max(#3)}=0</expression>
-                </dependency>
-            </dependencies>
-        </trigger>
-        <trigger>
-            <expression>{Template ICMP Ping:icmppingsec.avg(5m)}&gt;0.15</expression>
-            <name>O tempo de resposta é muito alto para {HOST.NAME} no  IP: {HOST.CONN}</name>
-            <url/>
-            <status>0</status>
-            <priority>2</priority>
-            <description/>
-            <type>0</type>
-            <dependencies>
-                <dependency>
-                    <name>{HOST.NAME} Não está disponível por ICMP no  IP: {HOST.CONN}</name>
-                    <expression>{Template ICMP Ping:icmpping.max(#3)}=0</expression>
-                </dependency>
-            </dependencies>
-        </trigger>
-        <trigger>
-            <expression>{Template ICMP Ping:icmpping.last()}=0</expression>
-            <name>Perda de Pacotes para {HOST.NAME} IP: {HOST.CONN}</name>
-            <url/>
-            <status>0</status>
-            <priority>0</priority>
-            <description/>
-            <type>0</type>
-            <dependencies/>
-        </trigger>
-        <trigger>
             <expression>{Template ICMP Ping:icmpping.max(#3)}=0</expression>
-            <name>{HOST.NAME} Não está disponível por ICMP no  IP: {HOST.CONN}</name>
+            <recovery_mode>0</recovery_mode>
+            <recovery_expression/>
+            <name>Indisponibilidade de 3 minutos na resposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
+            <correlation_mode>0</correlation_mode>
+            <correlation_tag/>
             <url/>
             <status>0</status>
-            <priority>3</priority>
+            <priority>4</priority>
             <description/>
             <type>0</type>
+            <manual_close>1</manual_close>
             <dependencies/>
+            <tags/>
+        </trigger>
+        <trigger>
+            <expression>{Template ICMP Ping:icmpping.max(#10)}=0</expression>
+            <recovery_mode>0</recovery_mode>
+            <recovery_expression/>
+            <name>Indisponibilidade de 10 minutos na resposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
+            <correlation_mode>0</correlation_mode>
+            <correlation_tag/>
+            <url/>
+            <status>0</status>
+            <priority>5</priority>
+            <description/>
+            <type>0</type>
+            <manual_close>1</manual_close>
+            <dependencies/>
+            <tags/>
+        </trigger>
+        <trigger>
+            <expression>{Template ICMP Ping:icmppingsec.avg(3m)}&gt;0.15</expression>
+            <recovery_mode>0</recovery_mode>
+            <recovery_expression/>
+            <name>Nos últimoos 3 minutos o tempo de resposta ICMP esteve acima de 150ms para: {HOST.NAME} no endereço de IP: {HOST.CONN} está acima da média.</name>
+            <correlation_mode>0</correlation_mode>
+            <correlation_tag/>
+            <url/>
+            <status>0</status>
+            <priority>2</priority>
+            <description/>
+            <type>0</type>
+            <manual_close>1</manual_close>
+            <dependencies>
+                <dependency>
+                    <name>Indisponibilidade de 3 minutos na resposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
+                    <expression>{Template ICMP Ping:icmpping.max(#3)}=0</expression>
+                    <recovery_expression/>
+                </dependency>
+            </dependencies>
+            <tags/>
+        </trigger>
+        <trigger>
+            <expression>{Template ICMP Ping:icmppingloss.min(3m)}&gt;20</expression>
+            <recovery_mode>0</recovery_mode>
+            <recovery_expression/>
+            <name>Nos últimos 3 minutos ocorreu 20% de perda na reposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
+            <correlation_mode>0</correlation_mode>
+            <correlation_tag/>
+            <url/>
+            <status>0</status>
+            <priority>2</priority>
+            <description/>
+            <type>0</type>
+            <manual_close>1</manual_close>
+            <dependencies>
+                <dependency>
+                    <name>Indisponibilidade de 3 minutos na resposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
+                    <expression>{Template ICMP Ping:icmpping.max(#3)}=0</expression>
+                    <recovery_expression/>
+                </dependency>
+            </dependencies>
+            <tags/>
         </trigger>
     </triggers>
     <value_maps>
