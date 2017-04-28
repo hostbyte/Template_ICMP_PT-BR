@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.2</version>
-    <date>2017-03-27T02:14:31Z</date>
+    <date>2017-04-28T00:51:09Z</date>
     <groups>
         <group>
             <name>Discovered hosts</name>
@@ -38,7 +38,7 @@
                     <key>icmpping</key>
                     <delay>60</delay>
                     <history>7</history>
-                    <trends>365</trends>
+                    <trends>90</trends>
                     <status>0</status>
                     <value_type>3</value_type>
                     <allowed_hosts/>
@@ -83,7 +83,7 @@
                     <key>icmppingloss</key>
                     <delay>60</delay>
                     <history>7</history>
-                    <trends>365</trends>
+                    <trends>90</trends>
                     <status>0</status>
                     <value_type>0</value_type>
                     <allowed_hosts/>
@@ -126,7 +126,7 @@
                     <key>icmppingsec</key>
                     <delay>60</delay>
                     <history>7</history>
-                    <trends>365</trends>
+                    <trends>90</trends>
                     <status>0</status>
                     <value_type>0</value_type>
                     <allowed_hosts/>
@@ -170,10 +170,10 @@
     </templates>
     <triggers>
         <trigger>
-            <expression>{Template ICMP Ping:icmpping.max(#3)}=0</expression>
+            <expression>{Template ICMP Ping:icmpping.max(#5)}=0</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
-            <name>Indisponibilidade de 3 minutos na resposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
+            <name>Indisponibilidade de 5 minutos na resposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
             <correlation_mode>0</correlation_mode>
             <correlation_tag/>
             <url/>
@@ -182,7 +182,13 @@
             <description/>
             <type>0</type>
             <manual_close>1</manual_close>
-            <dependencies/>
+            <dependencies>
+                <dependency>
+                    <name>Indisponibilidade de 10 minutos na resposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
+                    <expression>{Template ICMP Ping:icmpping.max(#10)}=0</expression>
+                    <recovery_expression/>
+                </dependency>
+            </dependencies>
             <tags/>
         </trigger>
         <trigger>
@@ -202,10 +208,10 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template ICMP Ping:icmppingsec.avg(3m)}&gt;0.15</expression>
+            <expression>{Template ICMP Ping:icmppingsec.avg(5m)}&gt;0.15</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
-            <name>Nos últimoos 3 minutos o tempo de resposta ICMP esteve acima de 150ms para: {HOST.NAME} no endereço de IP: {HOST.CONN} está acima da média.</name>
+            <name>Nos últimoos 5 minutos o tempo de resposta ICMP esteve acima de 150ms para: {HOST.NAME} no endereço de IP: {HOST.CONN} está acima da média.</name>
             <correlation_mode>0</correlation_mode>
             <correlation_tag/>
             <url/>
@@ -216,18 +222,18 @@
             <manual_close>1</manual_close>
             <dependencies>
                 <dependency>
-                    <name>Indisponibilidade de 3 minutos na resposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
-                    <expression>{Template ICMP Ping:icmpping.max(#3)}=0</expression>
+                    <name>Indisponibilidade de 5 minutos na resposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
+                    <expression>{Template ICMP Ping:icmpping.max(#5)}=0</expression>
                     <recovery_expression/>
                 </dependency>
             </dependencies>
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template ICMP Ping:icmppingloss.min(3m)}&gt;20</expression>
+            <expression>{Template ICMP Ping:icmppingloss.min(5m)}&gt;20</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
-            <name>Nos últimos 3 minutos ocorreu 20% de perda na reposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
+            <name>Nos últimos 5 minutos ocorreu 20% de perda na reposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
             <correlation_mode>0</correlation_mode>
             <correlation_tag/>
             <url/>
@@ -238,8 +244,8 @@
             <manual_close>1</manual_close>
             <dependencies>
                 <dependency>
-                    <name>Indisponibilidade de 3 minutos na resposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
-                    <expression>{Template ICMP Ping:icmpping.max(#3)}=0</expression>
+                    <name>Indisponibilidade de 5 minutos na resposta ICMP para: {HOST.NAME} no endereço de IP: {HOST.CONN}</name>
+                    <expression>{Template ICMP Ping:icmpping.max(#5)}=0</expression>
                     <recovery_expression/>
                 </dependency>
             </dependencies>
